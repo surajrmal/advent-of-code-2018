@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-fn part1(input: &str) -> usize {
-    let mut chemicals = String::from(input);
-    eprintln!("chemicals_len: {}", chemicals.len());
-=======
 extern crate rayon;
 
 use rayon::prelude::*;
 
 fn part1(input: &str) -> usize {
     let mut chemicals = String::from(input);
->>>>>>> day 5
     loop {
 	let mut iter = chemicals.chars().peekable();
 	let mut accum = String::new();
@@ -34,12 +28,8 @@ fn part1(input: &str) -> usize {
 }
 
 fn part2(input: &str) -> usize {
-<<<<<<< HEAD
-    (b'a'..b'z').map(|c| c as char).map(|lowercase| {
-=======
     let letters: Vec<_> = (b'a'..b'z').collect();
     letters.par_iter().map(|c| *c as char).map(|lowercase| {
->>>>>>> day 5
 	let uppercase = lowercase.to_ascii_uppercase();
 
 	let input = input.chars()

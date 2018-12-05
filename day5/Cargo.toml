@@ -5,7 +5,4 @@ authors = ["Suraj Malhotra <surajmalhotra@google.com>"]
 edition = "2018"
 
 [dependencies]
-<<<<<<< HEAD
-=======
 rayon = "*"
->>>>>>> day 5
