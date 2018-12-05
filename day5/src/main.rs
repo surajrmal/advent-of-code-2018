@@ -6,19 +6,20 @@ fn part1(input: &str) -> usize {
     let mut chemicals = String::from(input);
     loop {
 	let mut iter = chemicals.chars().peekable();
-	let mut accum = String::new();
+	let mut accum = String::with_capacity(chemicals.len());
 	let mut letter = iter.next();
 	let mut changed = false;
 	while let Some(l) = letter {
 	    if let Some(p) = iter.peek() {
 		if l != *p && l.to_ascii_lowercase() == p.to_ascii_lowercase() {
 		    changed = true;
-		    accum.push_str(iter.skip(1).collect::<String>().as_str());
-		    break;
+		    iter.next();
+		    letter = iter.next();
+		    continue;
 		}
 	    }
+	    letter = iter.next();
 	    accum.push(l);
-	    letter = iter.next()
 	}
 	if !changed {
 	    return chemicals.len();
