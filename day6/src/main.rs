@@ -1,5 +1,8 @@
 #[macro_use]
 extern crate failure;
+extern crate rayon;
+
+use rayon::prelude::*;
 
 use failure::Error;
 use std::str::FromStr;
@@ -120,18 +123,15 @@ fn part2(points: &Vec<Point>, less: i32) -> usize {
     let maxy = points.iter().map(|p| p.y).max().unwrap() + less;
 
     // Check each point in search space.
-    let mut count = 0;
-    (minx..=maxx).for_each(|x: i32| {
-	(miny..=maxy).for_each(|y: i32| {
+    let xs = (minx..=maxx).collect::<Vec<_>>();
+    xs.par_iter().map(|&x| {
+	(miny..=maxy).filter(|&y| {
 	    let current = Point { x: x, y: y };
-	    if points.iter().map(|point| {
+	    points.iter().map(|point| {
 		current.dist(point)
-	    }).sum::<i32>() < less {
-		count += 1;
-	    }
-	});
-    });
-    count
+	    }).sum::<i32>() < less
+	}).count()
+    }).sum()
 }
 
 fn main() {
