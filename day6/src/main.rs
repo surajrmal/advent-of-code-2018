@@ -117,10 +117,10 @@ fn part1(points: &Vec<Point>) -> i32 {
 
 fn part2(points: &Vec<Point>, less: i32) -> usize {
     // Find boundaries.
-    let minx = points.iter().map(|p| p.x).min().unwrap() - less;
-    let miny = points.iter().map(|p| p.y).min().unwrap() - less;
-    let maxx = points.iter().map(|p| p.x).max().unwrap() + less;
-    let maxy = points.iter().map(|p| p.y).max().unwrap() + less;
+    let minx = points.iter().map(|p| p.x).min().unwrap();
+    let miny = points.iter().map(|p| p.y).min().unwrap();
+    let maxx = points.iter().map(|p| p.x).max().unwrap();
+    let maxy = points.iter().map(|p| p.y).max().unwrap();
 
     // Check each point in search space.
     let xs = (minx..=maxx).collect::<Vec<_>>();
