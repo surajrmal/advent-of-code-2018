@@ -2,13 +2,15 @@
 extern crate failure;
 extern crate rayon;
 
-use rayon::prelude::*;
-
-use failure::Error;
-use std::str::FromStr;
-use std::cmp::Ordering;
-use std::collections::HashMap;
-use std::collections::HashSet;
+use {
+    failure::Error,
+    rayon::prelude::*,
+    std::{
+        cmp::Ordering,
+        collections::{HashMap, HashSet},
+	str::FromStr,
+    },
+};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 struct Point {
@@ -88,26 +90,21 @@ fn part1(points: &Vec<Point>) -> i32 {
     }
     // Find ones who will be infinite.
     let mut infinite = HashSet::new();
+    let mut check_infinite = |x, y| {
+	let current = Point { x: x, y: y };
+	if let Some(best_point) = find_best(&current, points) {
+	    infinite.insert(best_point);
+	}
+    };
     for x in (minx-1)..=(maxx+1) {
-	let current = Point { x: x as i32, y: miny - 1 };
-	if let Some(best_point) = find_best(&current, points) {
-	    infinite.insert(best_point);
-	}
-	let current = Point { x: x as i32, y: maxy + 1 };
-	if let Some(best_point) = find_best(&current, points) {
-	    infinite.insert(best_point);
-	}
+	check_infinite(x as i32, miny - 1);
+	check_infinite(x as i32, maxy + 1);
     }
     for y in (miny-1)..=(maxy+1) {
-	let current = Point { x: minx - 1, y: y as i32 };
-	if let Some(best_point) = find_best(&current, points) {
-	    infinite.insert(best_point);
-	}
-	let current = Point { x: maxx + 1, y: y as i32 };
-	if let Some(best_point) = find_best(&current, points) {
-	    infinite.insert(best_point);
-	}
+	check_infinite(minx - 1, y as i32);
+	check_infinite(maxx + 1, y as i32);
     }
+    // Remove infinite regions and find max.
     *count.iter()
 	  .filter(|(point, _)| !infinite.contains(point))
 	  .map(|(_, count)| count)
