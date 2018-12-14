@@ -14,8 +14,8 @@ fn part1(input: usize) -> String {
 	elf1 = (elf1 + recipes[elf1] + 1) % recipes.len();
 	elf2 = (elf2 + recipes[elf2] + 1) % recipes.len();
     }
-    (input..(input + 10)).map(|i| {
-	std::char::from_digit(recipes[i] as u32, 10).unwrap()
+    recipes.iter().skip(input).take(10).map(|&i| {
+	std::char::from_digit(i as u32, 10).unwrap()
     }).collect()
 }
 
